@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "djs-selfbot": "^13.6.0",
+    "telegraf": "^4.7.0"
+  },
+  "name": "Self Bot",
+  "version": "1.4.0",
+  "main": "index.js",
+  "author": "m7md3b#0734",
+  "description": "A Self-bot for DMs and Mentions",
+  "delay": 5000,
+  "scripts": {
+    "start": "node index.js"
+  }
+}

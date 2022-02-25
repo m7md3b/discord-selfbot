@@ -1,0 +1,9 @@
+{
+
+	"TelegramToken": "Your Telegram Bot Token",
+	"TelegramMentionsChannel": "Mentions Channel ID ",
+	"TelegramDMsChannel": "DMs Channel ID",
+	"USERTOKEN": "Your user TOKEN"
+
+	
+}
