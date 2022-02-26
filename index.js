@@ -22,7 +22,8 @@ Userclient.on('ready', () => {
 });
 
 Userclient.on("messageCreate", (message) => {
-    if (message.channel.type == 'DM') {       
+    if (message.channel.type == 'DM') {  
+        if (message.author.id === (Userclient.user.id)) return;     
     TelApp.telegram.sendMessage(config.TelegramDMsChannel, `NEW DM: from ${message.author.tag}\n\nMessage Content:\n${message.content}\n\nMessage URL:\n${message.url}`)
 		.catch(console.err)       
     }
