@@ -24,15 +24,15 @@ Userclient.on('ready', () => {
 Userclient.on("messageCreate", (message) => {
     if (message.channel.type == 'DM') {  
         if (message.author.id === (Userclient.user.id)) return;     
-    TelApp.telegram.sendMessage(config.TelegramDMsChannel, `NEW DM: from ${message.author.tag}\n\nMessage Content:\n${message.content}\n\nMessage URL:\n${message.url}`)
-		.catch(console.err)       
+		UserclientTelApp.telegram.sendMessage(config.TelegramDMsChannel, `${message.author.tag}: ${message.content}`)
+		.catch(error => {console.error(error);});       
     }
     if (message.content.includes(Userclient.user.id)){
-        TelApp.telegram.sendMessage(config.TelegramDMsChannel, `NEW Mention: from ${message.author.tag} in ${message.guild.name}\n\nMessage Content:\n${message.content}\n\nMessage URL:\n${message.url}`)
-		.catch(console.err)  
+		let mContent = message.content;
+  if (mContent.includes(Userclient.user.id)) mContent = mContent.replace(Userclient.user.id, '3ba')
+        UserclientTelApp.telegram.sendMessage(config.TelegramMentionsChannel, `${message.author.tag} - ${message.guild.name}: ${mContent}`)
+		.catch(error => {console.error(error);}); 
     }
-
-
-}); 
+});
 
 Userclient.login(config.USERTOKEN);
