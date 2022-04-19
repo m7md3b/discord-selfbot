@@ -12,7 +12,6 @@ partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
 });
 
 const config = require('./config.json');
-
 const { Telegraf } = require('telegraf');
 const TelApp = new Telegraf(config.TelegramToken);
 
