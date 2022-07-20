@@ -20,21 +20,22 @@ const { Telegraf } = require('telegraf');
 const TelApp = new Telegraf(config.TelegramToken);
 
 Userclient.on('ready', () => {
-	console.log('UserCliant is Ready');
+	console.log(`${Userclient.user.username} is Ready ✅`);
 	Userclient.user.setStatus('invisible'); // online, idle, invisible, dnd
 });
- 
+
+function TeleFilter(string) {
+    return string.replace(/\_/g, '\\_').replace(/\#/g, '\\#').replace(/\*/g, '\\*').replace(/\[/g, '\\[').replace(/\]/g, '\\]').replace(/\(/g, '\\(')
+    .replace(/\)/g, '\\)').replace(/\~/g, '\\~').replace(/\`/g, '\\`').replace(/\>/g, '\\>').replace(/\+/g, '\\+').replace(/\-/g, '\\-').replace(/\=/g, '\\=')
+    .replace(/\|/g, '\\|').replace(/\{/g, '\\{').replace(/\}/g, '\\}').replace(/\./g, '\\.').replace(/\!/g, '\\!');
+};
+
 Userclient.on("messageCreate", (message) => {
     if (message.channel.type == 'DM') {  
         if (message.author.id === (Userclient.user.id)) return;    	
         
-        let mContent = message.content.replace(/\_/g, '\\_').replace(/\#/g, '\\#').replace(/\*/g, '\\*').replace(/\[/g, '\\[').replace(/\]/g, '\\]').replace(/\(/g, '\\(')
-            .replace(/\)/g, '\\)').replace(/\~/g, '\\~').replace(/\`/g, '\\`').replace(/\>/g, '\\>').replace(/\+/g, '\\+').replace(/\-/g, '\\-').replace(/\=/g, '\\=')
-            .replace(/\|/g, '\\|').replace(/\{/g, '\\{').replace(/\}/g, '\\}').replace(/\./g, '\\.').replace(/\!/g, '\\!')
-
-        let mAuthor = message.author.tag.replace(/\_/g, '\\_').replace(/\#/g, '\\#').replace(/\*/g, '\\*').replace(/\[/g, '\\[').replace(/\]/g, '\\]').replace(/\(/g, '\\(')
-            .replace(/\)/g, '\\)').replace(/\~/g, '\\~').replace(/\`/g, '\\`').replace(/\>/g, '\\>').replace(/\+/g, '\\+').replace(/\-/g, '\\-').replace(/\=/g, '\\=')
-            .replace(/\|/g, '\\|').replace(/\{/g, '\\{').replace(/\}/g, '\\}').replace(/\./g, '\\.').replace(/\!/g, '\\!');
+        let mContent = TeleFilter(message.content);
+        let mAuthor = TeleFilter(message.author.tag);
 
         UserclientTelApp.telegram.sendMessage(config.TelegramDMsChannel, `*${mAuthor}:* ${mContent}`,
             {
@@ -50,18 +51,9 @@ Userclient.on("messageCreate", (message) => {
 
     if (message.content.includes(Userclient.user.id)){
 
-    let mContent = message.content.replace(/\_/g, '\\_').replace(/\#/g, '\\#').replace(/\*/g, '\\*').replace(/\[/g, '\\[').replace(/\]/g, '\\]').replace(/\(/g, '\\(')
-        .replace(/\)/g, '\\)').replace(/\~/g, '\\~').replace(/\`/g, '\\`').replace(/\>/g, '\\>').replace(/\+/g, '\\+').replace(/\-/g, '\\-').replace(/\=/g, '\\=')
-        .replace(/\|/g, '\\|').replace(/\{/g, '\\{').replace(/\}/g, '\\}').replace(/\./g, '\\.').replace(/\!/g, '\\!')
-        .replace(`<@${Userclient.user.id}\\>`, `*${Userclient.user.username}*`).replace(`<@!${Userclient.user.id}\\>`, `*${Userclient.user.username}*`);
-
-    let mAuthor = message.author.tag.replace(/\_/g, '\\_').replace(/\#/g, '\\#').replace(/\*/g, '\\*').replace(/\[/g, '\\[').replace(/\]/g, '\\]').replace(/\(/g, '\\(')
-        .replace(/\)/g, '\\)').replace(/\~/g, '\\~').replace(/\`/g, '\\`').replace(/\>/g, '\\>').replace(/\+/g, '\\+').replace(/\-/g, '\\-').replace(/\=/g, '\\=')
-        .replace(/\|/g, '\\|').replace(/\{/g, '\\{').replace(/\}/g, '\\}').replace(/\./g, '\\.').replace(/\!/g, '\\!');
-    
-    let mGuild = message.guild.name.replace(/\_/g, '\\_').replace(/\#/g, '\\#').replace(/\*/g, '\\*').replace(/\[/g, '\\[').replace(/\]/g, '\\]').replace(/\(/g, '\\(')
-        .replace(/\)/g, '\\)').replace(/\~/g, '\\~').replace(/\`/g, '\\`').replace(/\>/g, '\\>').replace(/\+/g, '\\+').replace(/\-/g, '\\-').replace(/\=/g, '\\=')
-        .replace(/\|/g, '\\|').replace(/\{/g, '\\{').replace(/\}/g, '\\}').replace(/\./g, '\\.').replace(/\!/g, '\\!');
+    let mContent = TeleFilter(message.content).replace(`<@${Userclient.user.id}\\>`, `*${Userclient.user.username}*`).replace(`<@!${Userclient.user.id}\\>`, `*${Userclient.user.username}*`);
+    let mAuthor = TeleFilter(message.author.tag);
+    let mGuild = TeleFilter(message.guild.name);
 
         UserclientTelApp.telegram.sendMessage(config.TelegramMentionsChannel, `*${mAuthor}* \\- ${mGuild}: ${mContent}`,
            {
